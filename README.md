@@ -1,2 +1,2 @@
 # Explainable-AI-Fraud-Detection
-Independent Study under Professot Ariful Azad.
+Independent Study under Professor Ariful Azad.
