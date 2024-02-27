@@ -1,0 +1,6 @@
+make_dataset:
+  test_per: 0.3
+  seed: 24
+
+
+

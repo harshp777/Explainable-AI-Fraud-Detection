@@ -1,0 +1,17 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: python .\src\data\make_dataset.py \raw\Credit_Risk_Dataset.xlsx \processed\
+    deps:
+    - path: .\data\raw\Credit_Risk_Dataset.xlsx
+      hash: md5
+      md5: 0a1fba2282cc2c6a92d4414a62a21ec8
+      size: 23392484
+    - path: .\src\data\make_dataset.py
+      hash: md5
+      md5: ff53dae0fbd71cd531daa8c3c8d49a6d
+      size: 10138
+    params:
+      params.yaml:
+        make_dataset.seed: 24
+        make_dataset.test_per: 0.3

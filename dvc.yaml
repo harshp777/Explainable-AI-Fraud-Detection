@@ -1,0 +1,18 @@
+stages:
+  make_dataset:
+
+    cmd: python .\src\data\make_dataset.py \raw\Credit_Risk_Dataset.xlsx \processed\
+
+    deps:
+    - .\src\data\make_dataset.py
+    - .\data\raw\Credit_Risk_Dataset.xlsx
+
+    params:
+
+    - make_dataset.test_per
+    - make_dataset.seed
+
+
+
+
+  
