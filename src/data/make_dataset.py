@@ -9,6 +9,8 @@ import pandas as pd
 import numpy as np
 import yaml
 import random
+import sys
+
 
 
 class TrainTestCreation:
@@ -16,7 +18,7 @@ class TrainTestCreation:
 
     def __init__(self, params):
 
-        self.test_per = params['test_par']
+        self.test_per = params['test_per']
         self.seed = params['seed']
         
 
@@ -31,22 +33,24 @@ class TrainTestCreation:
     
         # Reading each sheet from the Excel file and store it in a list of DataFrames
             for sheet_name in sheet_names:
+
+                print("1")
                 data_frame = pd.read_excel(read_path, sheet_name=sheet_name, engine='openpyxl')
                 dfs.append(data_frame)
-                loan_information = dfs[0]
-                employment = dfs[1]
-                personal_information = dfs[2]
-                other_information = dfs[3]
+            loan_information = dfs[0]
+            employment = dfs[1]
+            personal_information = dfs[2]
+            other_information = dfs[3]
 
-                merged_df = pd.merge(loan_information, employment, left_on='User_id', right_on='User id')
+            merged_df = pd.merge(loan_information, employment, left_on='User_id', right_on='User id')
 
                 # Merging the previously merged dataframe with 'personal_information' based on 'User_id'
-                merged_df = pd.merge(merged_df, personal_information, left_on='User_id', right_on='User id')
+            merged_df = pd.merge(merged_df, personal_information, left_on='User_id', right_on='User id')
 
                 # Merging the previously merged dataframe with 'other_information' based on 'User_id'
-                merged_df = pd.merge(merged_df, other_information, left_on='User_id', right_on='User_id')
+            merged_df = pd.merge(merged_df, other_information, left_on='User_id', right_on='User_id')
 
-                self.df = merged_df
+            self.df = merged_df
                 
                 
 
@@ -62,6 +66,7 @@ class TrainTestCreation:
             self.df= self.df.dropna(subset= columns)
         except Exception as e :
             print(f"Droppng column with null error: {e}")
+
 
 
     def replace_null_values_with_a_value(self, columns, value):
@@ -99,6 +104,9 @@ class TrainTestCreation:
 
 
 
+
+
+
     def drop_columns(self, columns_to_drop):
         try:
 
@@ -111,6 +119,9 @@ class TrainTestCreation:
 
         else:
             print("Unwanted columns dropped")
+
+
+
 
 
     def fix_skewness(self, features):
@@ -204,6 +215,9 @@ class TrainTestCreation:
         except Exception as e:
             print(f"Error in handling imbalance{e}")
 
+        else: 
+            print("Data imbalance handled")
+
 
     
     def split_traintestvalidate(self):
@@ -252,6 +266,7 @@ class TrainTestCreation:
 
     def fit(self, read_path, write_path):
 
+        
         self.read_data(['loan_information', 'Employment','Personal_information', 'Other_information' ], read_path)
         self.drop_nulls (["Industry","Work Experience"])
         self.replace_null_values_with_a_value( ["Social Profile", "Is_verified", "Married", "Employmet type"], "missing")
@@ -262,12 +277,20 @@ class TrainTestCreation:
         self.one_hot_encoding(["Gender", "Married", "Home", "Social Profile", "Loan Category", "Employmet type","Is_verified"])
         self.ordinal_encoding(["Tier of Employment", "Work Experience"])
         self.fix_imbalance_using_oversampling("Defaulter")
+        self.split_traintestvalidate()
         self.write_data(write_path)
 
 # Command-line interface using Click
-@click.command()
-@click.argument('input_filepath', type=click.Path())
-@click.argument('output_filepath', type=click.Path())
+#@click.command()
+#@click.argument('input_filepath', type=click.Path())
+#@click.argument('output_filepath', type=click.Path())
+
+
+input_path = sys.argv[1]
+output_path = sys.argv[2]
+
+
+
 
 
 
@@ -277,9 +300,7 @@ def main (input_filepath, output_filepath):
     Runs data cleaning and splitting script to turn raw data into from (.../raw) into data to be feed to the model. However, if there are
     more features to be added then we have to first push the data into (.../interim) and we can use the build_features.py
     to push the data into (.../processed).
-   
     """
-
     #set up paths
 
     curr_dir = Path(__file__)
@@ -290,68 +311,16 @@ def main (input_filepath, output_filepath):
     params_path = Path(home_dir.as_posix() + '/params.yaml')
     params = yaml.safe_load(open(params_path))['make_dataset']
 
-
     # initiating the object of TrainTestCreation
-
     split_data = TrainTestCreation(params)
 
-
     # Perform the steps of reading,processing , splitting, and writing data
-
     split_data.fit(input_path, output_path)
-
-
-    #Execute the main function 
-    if __name__ == '__main__' :
-        main()
+  
 
 
 
+    # Execute the main function s
+if __name__ == '__main__' :
 
-
-
-
-
-
-        
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-    
-
-
-
-                
-        
-
-
-    
-
-
-
-
-
-
-            
-
-            
-
-
-
-
+    main(input_path, output_path)

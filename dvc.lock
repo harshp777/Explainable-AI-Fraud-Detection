@@ -9,8 +9,8 @@ stages:
       size: 23392484
     - path: .\src\data\make_dataset.py
       hash: md5
-      md5: ff53dae0fbd71cd531daa8c3c8d49a6d
-      size: 10138
+      md5: 94b36f7c87bba92ec070c54f0801316f
+      size: 10171
     params:
       params.yaml:
         make_dataset.seed: 24
