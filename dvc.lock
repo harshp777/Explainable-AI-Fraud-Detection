@@ -50,7 +50,7 @@ stages:
         - Employmet type
         - Is_verified
         - Defaulter
-        train_model.model: XGBClassifier
+        train_model.model: RandomForestClassifier
         train_model.n_trials: 15
         train_model.ohe_features:
         - Gender
@@ -67,6 +67,6 @@ stages:
     outs:
     - path: dvclive
       hash: md5
-      md5: 5a21cee4c861cf942699a756fba6d9df.dir
-      size: 1357
+      md5: fd80a9acd55268c68fcec858fdda3bda.dir
+      size: 1245
       nfiles: 6
