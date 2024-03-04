@@ -20,7 +20,7 @@ stages:
     deps:
     - path: .\data\processed\
       hash: md5
-      md5: 59bf56078fa3db8f7a8dec9a58956ff7.dir
+      md5: 2e74ee72442e85689db72c2c5266681b.dir
       size: 108629172
       nfiles: 6
     - path: .\src\models\train_model.py
