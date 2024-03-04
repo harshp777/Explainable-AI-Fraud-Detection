@@ -2,5 +2,13 @@ make_dataset:
   test_per: 0.3
   seed: 24
 
+train_model:
+  model: 'XGBClassifier'
+  features: ['Amount','Interest Rate','Tenure(years)','Tier of Employment','Work Experience','Total Income(PA)','Dependents','Delinq_2yrs','Total Payement ','Received Principal','Interest Received','Number of loans','Gender','Married','Home','Social Profile','Loan Category','Employmet type','Is_verified','Defaulter']
+  ohe_features: ["Gender", "Married", "Home", "Social Profile", "Loan Category", "Employmet type","Is_verified"]
+  ord_features: ["Tier of Employment", "Work Experience"]
+  n_trials: 15
+  seed : 36
+
 
 

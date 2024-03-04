@@ -1,7 +1,10 @@
 stages:
+
+
+
   make_dataset:
 
-    cmd: python .\src\data\make_dataset.py \raw\Credit_Risk_Dataset.xlsx \processed\
+    cmd: python .\src\data\make_dataset.py \raw\Credit_Risk_Dataset.xlsx \interim\
 
     deps:
     - .\src\data\make_dataset.py
@@ -15,4 +18,33 @@ stages:
 
 
 
-  
+  train_model:
+    cmd: python .\src\models\train_model.py \interim\train_data.csv \interim\test_data.csv
+
+    deps:
+    - .\data\processed\
+    - .\src\models\train_model.py
+
+
+    params:
+    - train_model.model
+    - train_model.features
+    - train_model.ohe_features
+    - train_model.ord_features
+    - train_model.n_trials
+    - train_model.seed
+
+
+    outs:
+    - dvclive
+
+
+
+
+params:
+- dvclive/params.yaml
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step

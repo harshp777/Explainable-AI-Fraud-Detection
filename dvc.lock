@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   make_dataset:
-    cmd: python .\src\data\make_dataset.py \raw\Credit_Risk_Dataset.xlsx \processed\
+    cmd: python .\src\data\make_dataset.py \raw\Credit_Risk_Dataset.xlsx \interim\
     deps:
     - path: .\data\raw\Credit_Risk_Dataset.xlsx
       hash: md5
@@ -9,9 +9,64 @@ stages:
       size: 23392484
     - path: .\src\data\make_dataset.py
       hash: md5
-      md5: 94b36f7c87bba92ec070c54f0801316f
-      size: 10171
+      md5: e57b9afbb1a9deb8b5b293e285cefe12
+      size: 10845
     params:
       params.yaml:
         make_dataset.seed: 24
         make_dataset.test_per: 0.3
+  train_model:
+    cmd: python .\src\models\train_model.py \interim\train_data.csv \interim\test_data.csv
+    deps:
+    - path: .\data\processed\
+      hash: md5
+      md5: 59bf56078fa3db8f7a8dec9a58956ff7.dir
+      size: 108629172
+      nfiles: 6
+    - path: .\src\models\train_model.py
+      hash: md5
+      md5: 068e9682a63c8aa8f6ff855b3aa9a4be
+      size: 11963
+    params:
+      params.yaml:
+        train_model.features:
+        - Amount
+        - Interest Rate
+        - Tenure(years)
+        - Tier of Employment
+        - Work Experience
+        - Total Income(PA)
+        - Dependents
+        - Delinq_2yrs
+        - 'Total Payement '
+        - Received Principal
+        - Interest Received
+        - Number of loans
+        - Gender
+        - Married
+        - Home
+        - Social Profile
+        - Loan Category
+        - Employmet type
+        - Is_verified
+        - Defaulter
+        train_model.model: XGBClassifier
+        train_model.n_trials: 15
+        train_model.ohe_features:
+        - Gender
+        - Married
+        - Home
+        - Social Profile
+        - Loan Category
+        - Employmet type
+        - Is_verified
+        train_model.ord_features:
+        - Tier of Employment
+        - Work Experience
+        train_model.seed: 36
+    outs:
+    - path: dvclive
+      hash: md5
+      md5: 5a21cee4c861cf942699a756fba6d9df.dir
+      size: 1357
+      nfiles: 6

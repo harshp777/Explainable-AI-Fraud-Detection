@@ -5,6 +5,7 @@ from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 from imblearn.over_sampling import RandomOverSampler
+from imblearn.over_sampling import SMOTENC
 import pandas as pd
 import numpy as np
 import yaml
@@ -34,7 +35,7 @@ class TrainTestCreation:
         # Reading each sheet from the Excel file and store it in a list of DataFrames
             for sheet_name in sheet_names:
 
-                print("1")
+                
                 data_frame = pd.read_excel(read_path, sheet_name=sheet_name, engine='openpyxl')
                 dfs.append(data_frame)
             loan_information = dfs[0]
@@ -195,28 +196,49 @@ class TrainTestCreation:
 
 
 
-
-    def fix_imbalance_using_oversampling(self, target_column):
-
+    def fix_imbalance_using_SMOTENC(self, total_ind_columns,target_column):
+    
+  
         try:
 
             # Separate the features and the target variable
             X = self.df.drop(target_column, axis=1)
             y = self.df[target_column]
 
-            # Apply random oversampling using RandomOverSampler
-            oversampler = RandomOverSampler(random_state=42)
-            X, y = oversampler.fit_resample(X, y)
 
-            self.resampled_df = pd.DataFrame(data=X, columns=X.columns)  # Convert back to a DataFrame if needed
-            self.resampled_df[target_column] = y
+            # For generating maskks
+            categorical_columns = X.select_dtypes(include=['object']).columns
+            categorical_indices = [X.columns.get_loc(col) for col in categorical_columns]
 
+            print("Categorical Columns:", categorical_columns)
+            #print("Categorical Indices:", categorical_indices)
+
+
+            # Create a boolean mask
+            categorical_mask = [True if i in categorical_indices else False for i in range(total_ind_columns)]
+
+            print("Categorical Mask:", categorical_mask)
+
+            for col in categorical_columns:
+                X[col] = X[col].astype(str)
+
+
+            # Assuming `categorical_features` is a boolean mask indicating which features are categorical
+            smote_nc = SMOTENC(categorical_features=categorical_mask, random_state=42)
+            X, y = smote_nc.fit_resample(X, y)
+
+            self.df = pd.DataFrame(data=X, columns=X.columns)  # Convert back to a DataFrame if needed
+            self.df[target_column] = y
 
         except Exception as e:
-            print(f"Error in handling imbalance{e}")
+            print(f"Error with generating data through SMOTENC :{e}")
+        else:
+            print("Data generated successfully using SMOTE")
 
-        else: 
-            print("Data imbalance handled")
+
+
+
+
 
 
     
@@ -229,7 +251,7 @@ class TrainTestCreation:
 
         try:
 
-            self.train_data, self.test_data = train_test_split(self.resampled_df, random_state = self.seed, test_size = self.test_per)
+            self.train_data, self.test_data = train_test_split(self.df, random_state = self.seed, test_size = self.test_per)
             idx_list = list(self.test_data.index)
             test_idx = random.sample(idx_list, len(idx_list)//2)
             val_idx = list(set(idx_list) - set(test_idx))
@@ -266,6 +288,7 @@ class TrainTestCreation:
 
     def fit(self, read_path, write_path):
 
+        """It's better to maintain the below order of execution"""
         
         self.read_data(['loan_information', 'Employment','Personal_information', 'Other_information' ], read_path)
         self.drop_nulls (["Industry","Work Experience"])
@@ -274,16 +297,11 @@ class TrainTestCreation:
         self.replace_null_values_with_a_value(["Amount"],-1000)
         self.drop_columns(["Industry", "Role", "Pincode", 'User_id','User id_x','User id_y'])
         self.fix_skewness(['Amount','Interest Rate','Tenure(years)','Dependents','Total Payement ','Received Principal','Interest Received'])
-        self.one_hot_encoding(["Gender", "Married", "Home", "Social Profile", "Loan Category", "Employmet type","Is_verified"])
-        self.ordinal_encoding(["Tier of Employment", "Work Experience"])
-        self.fix_imbalance_using_oversampling("Defaulter")
+        #self.one_hot_encoding(["Gender", "Married", "Home", "Social Profile", "Loan Category", "Employmet type","Is_verified"])
+        #self.ordinal_encoding(["Tier of Employment", "Work Experience"])
+        self.fix_imbalance_using_SMOTENC(19,"Defaulter")
         self.split_traintestvalidate()
         self.write_data(write_path)
-
-# Command-line interface using Click
-#@click.command()
-#@click.argument('input_filepath', type=click.Path())
-#@click.argument('output_filepath', type=click.Path())
 
 
 input_path = sys.argv[1]
