@@ -20,9 +20,9 @@ stages:
     deps:
     - path: .\data\processed\
       hash: md5
-      md5: 2e74ee72442e85689db72c2c5266681b.dir
-      size: 108629172
-      nfiles: 6
+      md5: b72847660c81009d839e7cd158444fc3.dir
+      size: 66241898
+      nfiles: 5
     - path: .\src\models\train_model.py
       hash: md5
       md5: 068e9682a63c8aa8f6ff855b3aa9a4be
@@ -67,6 +67,6 @@ stages:
     outs:
     - path: dvclive
       hash: md5
-      md5: fd80a9acd55268c68fcec858fdda3bda.dir
-      size: 1245
+      md5: 0a965587ff24d76947a0aade731dedd4.dir
+      size: 1243
       nfiles: 6
