@@ -39,6 +39,16 @@ stages:
     - dvclive
 
 
+  visualize:
+
+    cmd: python .\src\visualization\visualize.py \interim\train_data.csv \interim\test_data.csv
+      \models\trained_models\ \reports\figures\
+
+    deps:
+    - .\data\interim
+    - .\models\trained_models\
+    - .\reports\figures\
+    - .\src\visualization\visualize.py
 
 
 params:
@@ -48,3 +58,8 @@ metrics:
 plots:
 - dvclive/plots/metrics:
     x: step
+
+
+
+  
+  
