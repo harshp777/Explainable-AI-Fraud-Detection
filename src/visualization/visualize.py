@@ -82,20 +82,22 @@ class VisualizeScores:
                     train_score = model_eval_classification(model, self.x_train, self.y_train)
                     test_score = model_eval_classification(model,self.x_test, self.y_test)
 
-                    self.metrics_dict['Model'].append(filename.split('_')[0])
-                    self.metrics_dict['Train_Accuracy'] = train_score['Accuracy']
-                    self.metrics_dict['Train_Precision'] = train_score['Precision']
-                    self.metrics_dict['Train_Recall'] = train_score['Recall']
-                    self.metrics_dict['Train_F1_Score'] = train_score['F1 Score']
+                    self.metrics_dict['Model'].append(filename.split('_')[0][:-10])
+                    self.metrics_dict['Train_Accuracy'].append(train_score['Accuracy'])
+                    self.metrics_dict['Train_Precision'].append(train_score['Precision'])
+                    self.metrics_dict['Train_Recall'].append(train_score['Recall'])
+                    self.metrics_dict['Train_F1_Score'].append(train_score['F1 Score'])
   
-                    self.metrics_dict['Test_Accuracy'] = test_score['Accuracy']
-                    self.metrics_dict['Test_Precision'] = test_score['Precision']
-                    self.metrics_dict['Test_Recall'] = test_score['Recall']
-                    self.metrics_dict['Test_F1_Score'] = test_score['F1 Score']
+                    self.metrics_dict['Test_Accuracy'].append(test_score['Accuracy'])
+                    self.metrics_dict['Test_Precision'].append(test_score['Precision'])
+                    self.metrics_dict['Test_Recall'].append(test_score['Recall'])
+                    self.metrics_dict['Test_F1_Score'].append(test_score['F1 Score'])
+
+                    print(self.metrics_dict)
         
 
 
-
+        
 
         except Exception as e:
 
@@ -115,6 +117,7 @@ class VisualizeScores:
 
 
         model_idx = self.metrics_df[['Test_F1_Score']].idxmax()[0]
+        print(model_idx)
 
 
         for filename in os.listdir(self.modelpath):
@@ -148,6 +151,8 @@ class VisualizeScores:
                     else:
                         print("Model pushed to S3 successfullly ")
 
+                    
+
 
         # Specify the directory path
         directory_path = Path(str(self.reportfig_path) + '/scoring_metrices')
@@ -179,7 +184,7 @@ class VisualizeScores:
 
     def generate_report(self):
 
-        image_folder = Path(str(self.reportfig_path) + '/scoring_metrics')
+        image_folder = Path(str(self.reportfig_path) + '/scoring_metrices')
         image_files = [file for file in os.listdir(image_folder) if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
         # Create an HTML template
@@ -264,7 +269,7 @@ def main(train_input_filepath, test_input_filepath, model_path, fig_path):
 
 
     #initialising an object
-    mtrcs = VisualizeScores(train_input_path, test_input_path, model_path, features,  reportfig_path, output_path, home_dir)
+    mtrcs = VisualizeScores(train_input_path, test_input_path, model_path, features,  reportfig_path,  output_path, home_dir)
 
 
     mtrcs.metrics_tracker()

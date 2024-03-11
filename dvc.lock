@@ -20,9 +20,9 @@ stages:
     deps:
     - path: .\data\processed\
       hash: md5
-      md5: b72847660c81009d839e7cd158444fc3.dir
-      size: 66241898
-      nfiles: 5
+      md5: 04ab66fe4de643e9d5556052e32ebb5d.dir
+      size: 26629673
+      nfiles: 4
     - path: .\src\models\train_model.py
       hash: md5
       md5: 068e9682a63c8aa8f6ff855b3aa9a4be
@@ -70,3 +70,26 @@ stages:
       md5: 0a965587ff24d76947a0aade731dedd4.dir
       size: 1243
       nfiles: 6
+  visualize:
+    cmd: python .\src\visualization\visualize.py \interim\train_data.csv \interim\test_data.csv
+      \models\trained_models\ \reports\figures\
+    deps:
+    - path: .\data\interim
+      hash: md5
+      md5: 465f2220094ee882e15282b141ef36ae.dir
+      size: 37880311
+      nfiles: 4
+    - path: .\models\trained_models\
+      hash: md5
+      md5: b07cd2e52e64458ff63c07d5579ad5d2.dir
+      size: 84600927
+      nfiles: 2
+    - path: .\reports\figures\
+      hash: md5
+      md5: d33133ecbdc888287ea5503cea23905b.dir
+      size: 68680
+      nfiles: 5
+    - path: .\src\visualization\visualize.py
+      hash: md5
+      md5: d0d1369cfe162dfe141991c2b3395cb9
+      size: 8856
