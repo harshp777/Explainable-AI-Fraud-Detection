@@ -36,7 +36,7 @@ jobs:
 
     - name: Create CML report
       env:
-        REPO_TOKEN: ${{ secrets.EAI_CONNECT }}
+        REPO_TOKEN: ${{ secrets.CONNECT_EAI }}
 
       run: |
         echo "# Report on Scoring metrics of model" >> report.md
