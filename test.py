@@ -107,7 +107,7 @@ class CI_test:
 
         except Exception as e:
 
-            print(f"Error in plotting and predicting: {e}")
+            print(f"Error in plotting and predicting : {e}")
 
         else:
             print("plotted successfully")
