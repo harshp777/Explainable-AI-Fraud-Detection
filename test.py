@@ -94,6 +94,8 @@ class CI_test:
             self.predict()
             self.score()
             fig, ax = plt.subplots()
+            print(list(self.score_dict.keys()))
+            print(list(self.score_dict.values()))
 
             ax.bar(list(self.score_dict.keys()), list(self.score_dict.values()) )
 

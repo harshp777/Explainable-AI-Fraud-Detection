@@ -42,3 +42,4 @@ jobs:
         echo "# Report on Scoring metrics of model" >> report.md
         echo "## Bar Plot" >> report.md
         echo '![]()' >> report.md
+        cml comment create report.md
