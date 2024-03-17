@@ -53,7 +53,7 @@ class CI_test:
 
         #model object to predict
 
-        predictor = pickle.load(open("best_testmodel.pkl",'rb'))
+        predictor = pickle.load(open("test_bestmodel.pkl",'rb'))
 
 
         #predictions
