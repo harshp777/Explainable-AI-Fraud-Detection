@@ -16,7 +16,6 @@ xgboost==2.0.3
 -e .
 
 # external requirements
-click
 Sphinx
 coverage
 awscli
