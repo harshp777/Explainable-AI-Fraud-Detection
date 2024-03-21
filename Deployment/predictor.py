@@ -12,8 +12,9 @@ class DefaultPredictor:
              
 
             dir_path = Path(__file__).parent
-            self.model_path = Path(dir_path.as_posix() + '/models/test_bestmodel.pkl')
-            self.params_path = Path(dir_path.as_posix() + 'features/.yaml')
+            # Have to change while deploying
+            self.model_path = Path(dir_path.parent.as_posix() + '/models/test_bestmodel.pkl')
+            self.params_path = Path(dir_path.as_posix() + '/features.yaml')
             self.features= yaml.safe_load(open(self.params_path))['model']['features']
         
         except Exception as e:
@@ -39,6 +40,7 @@ class DefaultPredictor:
         try:
 
             self.df = self.df[self.features]
+            print(self.df)
 
         except Exception as e:
             print(f'Feature build has been failed with error : {e}')
@@ -63,7 +65,7 @@ class DefaultPredictor:
         try:
 
 
-            self.df = self.dict_to_dif(dict)
+            self.df = self.dict_to_df(dict)
             self.build_features()
             self.model_load()
             pred = self.model.predict(self.df)
@@ -82,7 +84,11 @@ if __name__=="__main__":
     
         #dummy example if the main file has been ran directly 
         t = DefaultPredictor()
-        dict = {'Amount':[2000],'Interest Rate':[15.11],'Tenure(years)':[4],'Tier of Employment': ['A'],'Work Experience':['<1'] ,'Total Income(PA)':[1000],'Dependents':[2],'Delinq_2yrs':[1],'Total Payement ': [1500],'Received Principal': [100],'Interest Received':[50],'Number of loans':[4],'Gender':['Other'],'Married':['Yes'],'Home':['rent'],'Social Profile':['No'],'Loan Category':['Consolidation'],'Employmet type':['Salaried'],'Is_verified': ['Not Verified']}
+        dict = {'Amount':[2000],'Interest Rate':[15.11],'Tenure(years)':[4],'Tier of Employment': ['A'],'Work Experience':['<1']
+                 ,'Total Income(PA)':[100000],'Dependents':[2],'Delinq_2yrs':[1],'Total Payement ': [1500],
+                 'Received Principal': [100],'Interest Received':[50],'Number of loans':[4],
+                 'Gender':['Other'],'Married':['Yes'],'Home':['rent'],'Social Profile':['No'],
+                 'Loan Category':['Consolidation'],'Employmet type':['Salaried'],'Is_verified': ['Not Verified']}
         print(t.predict_defaulter(dict)[0])
         
 
