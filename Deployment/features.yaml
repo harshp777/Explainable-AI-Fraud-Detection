@@ -1,0 +1,2 @@
+model:
+  features:  ['Amount','Interest Rate','Tenure(years)','Tier of Employment','Work Experience','Total Income(PA)','Dependents','Delinq_2yrs','Total Payement ','Received Principal','Interest Received','Number of loans','Gender','Married','Home','Social Profile','Loan Category','Employmet type','Is_verified']

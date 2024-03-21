@@ -31,7 +31,7 @@ if __name__=='__main__':
 
     path = Path(__file__)
     home_dir = path.parent
-    modelpath = Path(str(home_dir) + '/models/bestmodel.pkl')
+    modelpath = Path(str(home_dir) + '/models/test_bestmodel.pkl')
 
 
     try:
