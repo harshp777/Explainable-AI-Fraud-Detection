@@ -2,8 +2,8 @@ name: CD Pipeline
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 
 jobs:
   build-and-push-ecr-image:
