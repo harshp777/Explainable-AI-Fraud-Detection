@@ -12,8 +12,8 @@ class DefaultPredictor:
              
 
             dir_path = Path(__file__).parent
-            # Have to change while deploying
-            self.model_path = Path(dir_path.parent.as_posix() + '/models/test_bestmodel.pkl')
+            # Have to change while deploying remove /models/
+            self.model_path = Path(dir_path.parent.as_posix() + '/test_bestmodel.pkl')
             self.params_path = Path(dir_path.as_posix() + '/features.yaml')
             self.features= yaml.safe_load(open(self.params_path))['model']['features']
         
