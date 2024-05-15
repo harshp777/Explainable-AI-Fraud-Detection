@@ -105,6 +105,7 @@ class CI_test:
             ax.set_title('Different Scoring metrics for model')
             plt.xticks(rotation = 'vertical')
             plt.savefig('metrices_bars.png')
+            ## CI-cml input --> echo '![](./metrices_bars.png "Metrices Bar plot")' >> report.md
 
 
         except Exception as e:
@@ -112,7 +113,7 @@ class CI_test:
             print(f"Error in plotting and predicting: {e}")
 
         else:
-            print("plotted successfully:")
+            print("plotted successfully")
 
 
 

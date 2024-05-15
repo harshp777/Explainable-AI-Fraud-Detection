@@ -40,6 +40,5 @@ jobs:
 
       run: |
         echo "# Report on Scoring metrics of model" >> report.md
-        echo "## Bar Plot" >> report.md
-        echo '![](./metrices_bars.png "Metrices Bar plot")' >> report.md
+        echo "## Bar Plot-- terminating this step for now" >> report.md
         cml comment create report.md
